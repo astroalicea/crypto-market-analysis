@@ -1,4 +1,7 @@
 import requests
+import logging
+
+logger = logging.getLogger(__name__)
 
 def fetch_coins(vs_currency="usd", per_page=10):
     base_url = "https://api.coingecko.com/api/v3"
@@ -14,11 +17,11 @@ def fetch_coins(vs_currency="usd", per_page=10):
         response.raise_for_status()
         return response.json()
     except requests.exceptions.Timeout:
-        print("Request times out. CoinGecko did not respond in time.")
+        logger.error("Request times out. CoinGecko did not respond in time.")
         return None
     except requests.exceptions.HTTPError as error:
-        print(f"HTTP error: {error}")
+        logger.error(f"HTTP error: {error}")
         return None
     except requests.exceptions.RequestException as error:
-        print(f"Request failed: {error}")
+        logger.error(f"Request failed: {error}")
         return None
