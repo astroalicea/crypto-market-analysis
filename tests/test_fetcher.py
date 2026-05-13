@@ -2,6 +2,7 @@ import pytest
 import requests
 from unittest.mock import patch, MagicMock
 from fetcher import fetch_coins
+import json
 
 
 def test_fetch_coins_returns_list_on_success():
@@ -33,3 +34,13 @@ def test_fetch_coins_returns_none_on_request_exception():
         result = fetch_coins()
 
     assert result is None 
+
+def test_fetch_coins_returns_none_on_invalid_json():
+    mock_response = MagicMock()
+    mock_response.raise_for_status.return_value = None
+    mock_response.json.side_effect = json.JSONDecodeError("bad json", "", 0)
+
+    with patch("fetcher.requests.get", return_value=mock_response):
+        result = fetch_coins()
+
+    assert result is None

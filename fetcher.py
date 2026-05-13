@@ -1,5 +1,6 @@
 import requests
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +23,10 @@ def fetch_coins(vs_currency="usd", per_page=10):
     except requests.exceptions.HTTPError as error:
         logger.error(f"HTTP error: {error}")
         return None
+    except json.JSONDecodeError:
+        logger.error("CoinGecko returned invalid JSON.")
+        return None
     except requests.exceptions.RequestException as error:
         logger.error(f"Request failed: {error}")
         return None
+    
