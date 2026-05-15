@@ -16,3 +16,19 @@ def test_load_coins_returns_dataframe_on_valid_data():
 
     assert isinstance(result, pd.DataFrame)
     assert len(result) == 1
+
+def test_load_coins_filters_out_invalid_coins():
+    invalid_coin = {"id": "dogecoin", "symbol": "doge"}
+
+    result = load_coins_into_dataframe([VALID_COIN, invalid_coin])
+
+    assert isinstance(result, pd.DataFrame)
+    assert len(result) == 1
+    assert result.iloc[0]["id"] == "bitcoin"
+
+def test_load_coins_returns_none_when_all_invalid():
+    invalid_coin = {"id": "dogecoin", "symbol": "doge"}
+
+    result = load_coins_into_dataframe([invalid_coin])
+
+    assert result is None

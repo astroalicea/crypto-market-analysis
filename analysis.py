@@ -12,3 +12,4 @@ def load_coins_into_dataframe(coins):
         logger.error("No valid coin data after field validation.")
         return None
     return pd.DataFrame(valid_coins)
+
