@@ -35,3 +35,15 @@ def normalize_market_cap(df):
     df = df.copy()
     df["market_cap_normalized"] = (df["market_cap"] - min_cap) / (max_cap - min_cap)
     return df
+
+def assign_market_cap_tiers(df):
+    if df is None or df.empty:
+        logger.error("Cannot assign market cap tiers to empty data.")
+        return None
+
+    df = df.copy()
+    # thresholds mirror industry-standard cap tiers, not relative to the fetched sample
+    bins = [-np.inf, 1_000_000_000, 10_000_000_000, np.inf]
+    labels = ["small_cap", "mid_cap", "large_cap"]
+    df["market_cap_tier"] = pd.cut(df["market_cap"], bins=bins, labels=labels)
+    return df

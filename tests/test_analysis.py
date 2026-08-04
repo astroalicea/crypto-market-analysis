@@ -1,7 +1,11 @@
 import pytest
 import pandas as pd
-from analysis import load_coins_into_dataframe
-from analysis import load_coins_into_dataframe, calculate_volatility, normalize_market_cap
+from analysis import (
+    load_coins_into_dataframe,
+    calculate_volatility,
+    normalize_market_cap,
+    assign_market_cap_tiers,
+)
 
 VALID_COIN = {
     "id": "bitcoin",
@@ -90,4 +94,36 @@ def test_calculate_volatility_returns_none_on_none_input():
 
 def test_callculate_volatility_returns_none_on_empty_dataframe():
     result = calculate_volatility(pd.DataFrame())
+    assert result is None
+
+def test_assign_market_cap_tiers_adds_tier_column():
+    df = pd.DataFrame([
+        make_coin("bitcoin", 12_000_000_000),
+        make_coin("solana", 5_000_000_000),
+        make_coin("pepe", 500_000_000),
+    ])
+
+    result = assign_market_cap_tiers(df)
+
+    assert "market_cap_tier" in result.columns
+
+def test_assign_market_cap_tiers_classifies_correctly():
+    df = pd.DataFrame([
+        make_coin("bitcoin", 12_000_000_000),
+        make_coin("solana", 5_000_000_000),
+        make_coin("pepe", 500_000_000),
+    ])
+
+    result = assign_market_cap_tiers(df)
+
+    assert result.loc[result["id"] == "bitcoin", "market_cap_tier"].iloc[0] == "large_cap"
+    assert result.loc[result["id"] == "solana", "market_cap_tier"].iloc[0] == "mid_cap"
+    assert result.loc[result["id"] == "pepe", "market_cap_tier"].iloc[0] == "small_cap"
+
+def test_assign_market_cap_tiers_returns_none_on_empty_dataframe():
+    result = assign_market_cap_tiers(pd.DataFrame())
+    assert result is None
+
+def test_assign_market_cap_tiers_returns_none_on_none_input():
+    result = assign_market_cap_tiers(None)
     assert result is None

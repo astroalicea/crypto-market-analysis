@@ -172,19 +172,19 @@ The last question matters most. If I can't answer it, we need to review before c
 > Keep this updated. Check off items as completed.
 
 **Phase 2 — API Layer**
-- [ ] CoinGecko fetch function
-- [ ] Error handling (timeout, 429, malformed JSON, missing fields)
-- [ ] pytest tests for fetch function
+- [x] CoinGecko fetch function
+- [x] Error handling (timeout, 429, malformed JSON, missing fields)
+- [x] pytest tests for fetch function
 
 **Phase 3 — pandas + NumPy**
-- [ ] Load API data into DataFrame
-- [ ] NumPy volatility and normalization calculations
-- [ ] Group and rank data (top/bottom coins, market cap tiers)
+- [x] Load API data into DataFrame
+- [x] NumPy volatility and normalization calculations
+- [x] Group and rank data (top/bottom coins, market cap tiers)
 
 **Phase 4 — Matplotlib**
-- [ ] Horizontal bar chart (top 10 by market cap)
-- [ ] Scatter plot (volume vs price change, colored by tier)
-- [ ] Combined subplot export (PNG, 150 DPI)
+- [x] Horizontal bar chart (top 10 by market cap)
+- [x] Scatter plot (volume vs price change, colored by tier)
+- [x] Combined subplot export (PNG, 150 DPI)
 
 **Phase 5 — Django**
 - [ ] Django project scaffold (crypto_dashboard)
