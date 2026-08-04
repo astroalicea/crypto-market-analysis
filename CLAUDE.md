@@ -187,10 +187,10 @@ The last question matters most. If I can't answer it, we need to review before c
 - [x] Combined subplot export (PNG, 150 DPI)
 
 **Phase 5 — Django**
-- [ ] Django project scaffold (crypto_dashboard)
-- [ ] CoinSnapshot model + migrations
-- [ ] fetch_coins management command
-- [ ] Dashboard view + template
+- [x] Django project scaffold (crypto_dashboard)
+- [x] CoinSnapshot model + migrations
+- [x] fetch_coins management command
+- [x] Dashboard view + template
 
 **Phase 6 — Deploy**
 - [ ] Production config (env vars, DEBUG=False, ALLOWED_HOSTS)

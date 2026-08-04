@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crypto Market Dashboard</title>
+    <style>
+        body { font-family: sans-serif; margin: 2rem; }
+        table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+        th, td { text-align: left; padding: 0.4rem 0.8rem; border-bottom: 1px solid #ddd; }
+        img { max-width: 100%; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+    <h1>Crypto Market Dashboard</h1>
+    <p>Last updated: {{ last_updated|default:"never — run manage.py fetch_coins" }}</p>
+
+    <img src="{% url 'dashboard_chart' %}" alt="Top coins by market cap and volume vs. price change">
+
+    <table>
+        <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Price</th>
+                <th>Market Cap</th>
+                <th>Tier</th>
+                <th>24h Change</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for snapshot in snapshots %}
+            <tr>
+                <td>{{ snapshot.symbol|upper }}</td>
+                <td>${{ snapshot.current_price }}</td>
+                <td>${{ snapshot.market_cap }}</td>
+                <td>{{ snapshot.market_cap_tier }}</td>
+                <td>{{ snapshot.price_change_percentage_24h }}%</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">No data yet. Run <code>python manage.py fetch_coins</code>.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

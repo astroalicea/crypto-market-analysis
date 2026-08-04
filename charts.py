@@ -1,5 +1,8 @@
 import logging
 
+import matplotlib
+matplotlib.use("Agg")  # this module only ever produces static images (files, HTTP responses, tests) — never an interactive window
+
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 

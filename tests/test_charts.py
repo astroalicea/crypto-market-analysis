@@ -1,10 +1,8 @@
-import matplotlib
-matplotlib.use("Agg")  # headless backend so tests never try to open a GUI window
-
 import pandas as pd
-import matplotlib.pyplot as plt
 
 from charts import plot_top_market_cap, plot_volume_vs_price_change, build_dashboard, format_usd
+
+import matplotlib.pyplot as plt  # imported after `charts` so its Agg backend selection wins
 
 VALID_COIN = {
     "id": "bitcoin",
