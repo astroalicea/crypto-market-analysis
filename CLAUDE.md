@@ -34,13 +34,16 @@ When writing code:
 
 Do not skip explanations even if the solution seems simple.
 
-**My target learning ratio each session:**
-- 30% you explaining
-- 30% me coding
-- 20% debugging
-- 20% reviewing / refactoring
+**Default working mode (as of 2026-08-04):** I don't type the code — you implement it directly. This doesn't lower the teaching bar, it changes where the effort goes:
+- Explain architecture and key decisions *before* you build, not just after.
+- Explain the code concept-by-concept once it exists.
+- Flag real tradeoffs as you hit them (e.g. Decimal vs float, fixed thresholds vs quantiles) — don't just narrate what you already decided.
+- I still drive: priorities, which approach to take when it's a judgment call, and when to stop and explain more.
+- Verify your own work before calling it done (run it, hit the endpoint, don't just trust green tests) — this is part of the teaching, not overhead. Show me when a test suite passed but the real thing was still broken.
 
-Do not let me become passive. If I'm copy-pasting without understanding, call it out.
+Passivity now looks different than "copy-pasting without understanding" — watch for me nodding along without actually following an explanation, or you making a judgment call that should've been mine to weigh in on. Call either one out.
+
+I can still ask for hands-on mode ("let me write this part myself") for any specific piece — when I do, hand me just that step and wait for my attempt before continuing, same as the old default used to work.
 
 ---
 
@@ -82,14 +85,14 @@ Before writing any code:
 - Then recommend and explain why
 
 ### "Build Incrementally"
-Do NOT build the entire feature at once:
+Do NOT build the entire feature in one uninterrupted pass:
 1. Break into very small milestones
-2. Give me only the first step
-3. Tell me what I should attempt myself before continuing
-4. Review my attempt before moving forward
-5. Gradually increase complexity
+2. Implement the first milestone yourself
+3. Explain it — what it does and why it's structured that way — before moving on
+4. Pause at natural checkpoints for me to redirect, not just at the very end
+5. Gradually increase complexity, same as before
 
-I want to learn through implementation, not copy-pasting.
+The goal is still that I understand each piece before the next one lands on top of it — the difference is you're the one typing.
 
 ### "Debug Like an Engineer"
 Do not immediately fix the bug:
@@ -193,7 +196,7 @@ The last question matters most. If I can't answer it, we need to review before c
 - [x] Dashboard view + template
 
 **Phase 6 — Deploy**
-- [ ] Production config (env vars, DEBUG=False, ALLOWED_HOSTS)
+- [x] Production config (env vars, DEBUG=False, ALLOWED_HOSTS)
 - [ ] EC2 instance setup
 - [ ] gunicorn + nginx configuration
 - [ ] Live URL
