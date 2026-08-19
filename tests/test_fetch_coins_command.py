@@ -55,6 +55,21 @@ def test_fetch_coins_command_handles_fetch_failure():
 
 
 @pytest.mark.django_db
+def test_fetch_coins_command_handles_no_valid_coins():
+    stderr = StringIO()
+    invalid_coin = {"id": "dogecoin", "symbol": "doge"}
+
+    with patch(
+        "dashboard.management.commands.fetch_coins.fetch_coins_from_api",
+        return_value=[invalid_coin],
+    ):
+        call_command("fetch_coins", stderr=stderr)
+
+    assert CoinSnapshot.objects.count() == 0
+    assert "No valid coin data" in stderr.getvalue()
+
+
+@pytest.mark.django_db
 def test_fetch_coins_command_passes_per_page_argument():
     with patch(
         "dashboard.management.commands.fetch_coins.fetch_coins_from_api",
