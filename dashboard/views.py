@@ -7,17 +7,16 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from charts import build_dashboard
-from dashboard.models import CoinSnapshot
+from dashboard.models import CoinSnapshot, FetchRun
 
 
 def _latest_snapshots():
-    # one row per coin_id: the most recently inserted snapshot, not full history
-    latest_ids = (
-        CoinSnapshot.objects.values("coin_id")
-        .annotate(latest_id=Max("id"))
-        .values_list("latest_id", flat=True)
-    )
-    return CoinSnapshot.objects.filter(id__in=latest_ids).order_by("-market_cap")
+    # only the newest *successful* run: coins that fell out of the top N disappear,
+    # and a failed fetch leaves the last good data on screen instead of a blank page
+    latest_run = FetchRun.objects.filter(status=FetchRun.Status.SUCCESS).first()
+    if latest_run is None:
+        return CoinSnapshot.objects.none()
+    return latest_run.snapshots.order_by("-market_cap")
 
 
 def _snapshots_to_dataframe(snapshots):

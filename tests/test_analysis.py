@@ -2,7 +2,7 @@ import pytest
 import pandas as pd
 from analysis import (
     load_coins_into_dataframe,
-    calculate_volatility,
+    calculate_price_change_dispersion,
     normalize_market_cap,
     assign_market_cap_tiers,
 )
@@ -68,6 +68,15 @@ def test_load_coins_filters_out_invalid_coins():
     assert len(result) == 1
     assert result.iloc[0]["id"] == "bitcoin"
 
+def test_load_coins_filters_out_coins_with_null_values():
+    # CoinGecko sends the key with a null value for new/illiquid coins, not a missing key
+    null_change_coin = {**VALID_COIN, "id": "newcoin", "price_change_percentage_24h": None}
+
+    result = load_coins_into_dataframe([VALID_COIN, null_change_coin])
+
+    assert len(result) == 1
+    assert result.iloc[0]["id"] == "bitcoin"
+
 def test_load_coins_returns_none_when_all_invalid():
     invalid_coin = {"id": "dogecoin", "symbol": "doge"}
 
@@ -75,25 +84,25 @@ def test_load_coins_returns_none_when_all_invalid():
 
     assert result is None
 
-def test_calculate_volatility_returns_float():
+def test_calculate_price_change_dispersion_returns_float():
     df = pd.DataFrame([
         {**VALID_COIN, "price_change_percentage_24h": 2.5},
         {**VALID_COIN, "id": "ethereum", "price_change_percentage_24h": -1.5},
         {**VALID_COIN, "id": "solana", "price_change_percentage_24h": 4.0},
     ])
 
-    result = calculate_volatility(df)
+    result = calculate_price_change_dispersion(df)
 
     assert isinstance(result, float)
     assert result >= 0
 
-def test_calculate_volatility_returns_none_on_none_input():
-    result = calculate_volatility(None)
+def test_calculate_price_change_dispersion_returns_none_on_none_input():
+    result = calculate_price_change_dispersion(None)
 
     assert result is None
 
-def test_callculate_volatility_returns_none_on_empty_dataframe():
-    result = calculate_volatility(pd.DataFrame())
+def test_calculate_price_change_dispersion_returns_none_on_empty_dataframe():
+    result = calculate_price_change_dispersion(pd.DataFrame())
     assert result is None
 
 def test_assign_market_cap_tiers_adds_tier_column():

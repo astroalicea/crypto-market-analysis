@@ -7,16 +7,23 @@ logger = logging.getLogger(__name__)
 REQUIRED_FIELDS = ["id", "symbol", "current_price", "market_cap", "total_volume", "price_change_percentage_24h"]
 
 def load_coins_into_dataframe(coins):
-    valid_coins = [coin for coin in coins if all(field in coin for field in REQUIRED_FIELDS)]
+    # .get() covers both a missing key and an explicit null — CoinGecko sends the latter for new/illiquid coins
+    valid_coins = [coin for coin in coins if all(coin.get(field) is not None for field in REQUIRED_FIELDS)]
+
+    dropped_count = len(coins) - len(valid_coins)
+    if dropped_count:
+        logger.warning(f"Dropped {dropped_count} of {len(coins)} coins with missing or null required fields.")
 
     if not valid_coins:
         logger.error("No valid coin data after field validation.")
         return None
     return pd.DataFrame(valid_coins)
 
-def calculate_volatility(df):
+def calculate_price_change_dispersion(df):
+    # cross-sectional: how spread out the coins' 24h moves are at one moment.
+    # Not volatility — that's one coin's returns over time, which needs snapshot history.
     if df is None or df.empty:
-        logger.error("Cannot calculate volatility on empty data.")
+        logger.error("Cannot calculate price change dispersion on empty data.")
         return None
     return float(np.std(df["price_change_percentage_24h"]))
 
