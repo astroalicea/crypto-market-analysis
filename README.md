@@ -55,14 +55,14 @@ python manage.py fetch_coins --per-page 50   # fetch more coins
 **2. Start the dashboard:**
 
 ```bash
-python manage.py runserver
+python manage.py runserver 8001
 ```
 
 Then open:
 
-- http://127.0.0.1:8000/ shows the coin table
-- http://127.0.0.1:8000/chart.png shows the chart image on its own
-- http://127.0.0.1:8000/admin/ lets you browse runs and snapshots (run `python manage.py createsuperuser` first)
+- http://127.0.0.1:8001/ shows the coin table
+- http://127.0.0.1:8001/chart.png shows the chart image on its own
+- http://127.0.0.1:8001/admin/ lets you browse runs and snapshots (run `python manage.py createsuperuser` first)
 
 The data is only as fresh as your last `fetch_coins` run. Run it again to update the dashboard.
 
