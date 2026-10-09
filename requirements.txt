@@ -2,6 +2,7 @@ asgiref==3.12.1
 certifi==2026.4.22
 charset-normalizer==3.4.7
 Django==6.0.8
+gunicorn==23.0.0
 idna==3.13
 iniconfig==2.3.0
 matplotlib==3.10.8
@@ -10,8 +11,8 @@ packaging==26.2
 pandas==3.0.2
 pluggy==1.6.0
 Pygments==2.20.0
-pytest==9.0.3
 pytest-django==4.12.0
+pytest==9.0.3
 python-decouple==3.8
 requests==2.33.1
 sqlparse==0.5.5

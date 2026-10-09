@@ -1,0 +1,20 @@
+# systemd unit: keeps gunicorn running, restarts it if it crashes, starts it on boot.
+# Install: sudo cp deploy/gunicorn.service /etc/systemd/system/
+
+[Unit]
+Description=gunicorn for crypto-market-analysis
+After=network.target
+
+[Service]
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/srv/crypto-market-analysis
+# bound to localhost only: the outside world reaches Django through nginx, never directly
+ExecStart=/srv/crypto-market-analysis/venv/bin/gunicorn \
+    --workers 2 \
+    --bind 127.0.0.1:8000 \
+    crypto_dashboard.wsgi:application
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
